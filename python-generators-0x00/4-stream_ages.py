@@ -10,7 +10,7 @@ def conect_db():
     
     
 # Generator function to stream user ages one by one
-def stream_user_age():
+def stream_user_ages():
     connection = conect_db()
     cursor = connection.cursor(dictionary=True)
     
@@ -28,7 +28,7 @@ def calculate_average_age():
     total_age = 0
     count = 0
     
-    for age in stream_user_age():
+    for age in stream_user_ages():
         total_age += age
         count += 1
         
