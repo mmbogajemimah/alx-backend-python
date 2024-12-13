@@ -1,9 +1,10 @@
 import sqlite3
 import functools
 import logging
+from datetime import datetime
 
 #Setup Logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 # Decorator to log SQL queries
@@ -28,5 +29,7 @@ def fetch_all_users(query):
     return results
 
 #Fetch users while logging the query
-users = fetch_all_users(query="SELECT * FROM users")
+if __name__ == "__main__":
+    users = fetch_all_users(query="SELECT * FROM users")
+    print(users)
 
