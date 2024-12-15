@@ -59,7 +59,7 @@ class TestGithubOrgClient(unittest.TestCase):
             test_client = GithubOrgClient("holberton")
             test_return = test_client._public_repos_url
             mock_get.assert_called_once()
-            self.assertEqual(test_return, 
+            self.assertEqual(test_return,
                              mock_get.return_value.get("repos_url"))
 
     @patch("client.get_json", return_value=[{"name": "holberton"}])
@@ -74,7 +74,7 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_get (Mock): Mocked `get_json` function.
 
         Asserts:
-            - The `public_repos` method returns the expected list of 
+            - The `public_repos` method returns the expected list of
             repositories.
             - The `get_json` function is called exactly once.
             - The `_public_repos_url` property is called exactly once.
