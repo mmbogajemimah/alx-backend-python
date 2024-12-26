@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError  # Import ValidationError
 from .models import CustomUser, Conversation, Message
 
 
@@ -31,6 +32,12 @@ class MessageSerializer(serializers.ModelSerializer):
         """Format the sent_at field as a readable string."""
         return obj.sent_at.strftime('%Y-%m-%d %H:%M:%S') if obj.sent_at else None
 
+    def validate_message_body(self, value):
+        """Validate that the message body is not empty."""
+        if not value.strip():
+            raise ValidationError("Message body cannot be empty.")
+        return value
+
 
 # Conversation Serializer
 class ConversationSerializer(serializers.ModelSerializer):
@@ -50,4 +57,10 @@ class ConversationSerializer(serializers.ModelSerializer):
         """Provide a truncated version of the last message."""
         if obj.last_message:
             return obj.last_message[:50] + "..." if len(obj.last_message) > 50 else obj.last_message
-        return None
+        return "No messages yet."
+
+    def validate(self, data):
+        """Ensure required fields for group conversations."""
+        if data.get('is_group') and not data.get('group_name'):
+            raise ValidationError("Group name is required for group conversations.")
+        return data
