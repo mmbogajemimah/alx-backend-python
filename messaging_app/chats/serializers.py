@@ -41,7 +41,7 @@ class MessageSerializer(serializers.ModelSerializer):
 # Conversation Serializer
 class ConversationSerializer(serializers.ModelSerializer):
     participants = UserSerializer(many=True, read_only=True)  # Includes nested participants' data
-    messages = MessageSerializer(many=True, read_only=True, source='messages')  # Includes nested messages
+    messages = MessageSerializer(many=True, read_only=True)  # Includes nested messages
     last_message_summary = serializers.SerializerMethodField()  # Custom field for last message preview
 
     class Meta:
@@ -63,3 +63,4 @@ class ConversationSerializer(serializers.ModelSerializer):
         if data.get('is_group') and not data.get('group_name'):
             raise serializers.ValidationError("Group name is required for group conversations.")
         return data
+

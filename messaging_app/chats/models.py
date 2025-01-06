@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.timezone import now
 
 # Custom User Model
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)  
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True, null=True)
@@ -24,7 +24,7 @@ class User(AbstractUser):
 # Conversation Model
 class Conversation(models.Model):
     conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    participants = models.ManyToManyField(User, related_name="conversations")
+    participants = models.ManyToManyField(CustomUser, related_name="conversations")
     topic = models.CharField(max_length=255, blank=True, null=True)
     is_group = models.BooleanField(default=False)
     group_name = models.CharField(max_length=255, blank=True, null=True)
@@ -41,7 +41,7 @@ class Conversation(models.Model):
 # Message Model
 class Message(models.Model):
     message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="messages_sent")
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="messages_sent")
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name="messages")
     message_body = models.TextField()  
     sent_at = models.DateTimeField(default=now)  
